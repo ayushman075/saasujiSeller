@@ -9,6 +9,7 @@ import Login from './pages/Login.jsx'
 import Signin from './pages/Signin.jsx'
 import Home from './pages/Home.jsx'
 import { Toaster } from "@/components/ui/toaster"
+import Product from './pages/Product.jsx'
 
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
           <Route path={"/"} element={<Home/>}/>
           <Route path={"/sign-in"} element={<Login/>}/>
           <Route path={"/sign-up"} element={<Signin/>}/>
-
+          <Route path={"/product"} element={<Product/>}/>
           
         </Routes>
       </BrowserRouter>

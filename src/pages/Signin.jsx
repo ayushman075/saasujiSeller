@@ -262,7 +262,7 @@ sdfssdfdsfsdaas
 
   </button>}
   <Progress style={{color:"orange"}} className={'mt-6 w-1/2  text-orange-300 ' }value={100*formPage/2} />
-  <button disabled={isLoading}  onClick={()=>{formPage<2&&setFormPage(formPage+1);formPage==2&&handleSubmit}} disabled={formPage>2} className='p-2 px-3 rounded-lg m-2 border-2 border-orange-300 bg-orange-300 hover:bg-white'>
+  <button disabled={isLoading}  onClick={()=>{formPage<2&&setFormPage(formPage+1);formPage==2&&handleSubmit}} className='p-2 px-3 rounded-lg m-2 border-2 border-orange-300 bg-orange-300 hover:bg-white'>
 {formPage==2?'Submit':'Next'}
   </button>
 
