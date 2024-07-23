@@ -74,7 +74,7 @@ function ProductList() {
       credentials: 'include',
       withCredentials: true,
         baseURL: `${HOST_NAME}`,
-        headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json'},
         
       })
       useEffect(()=>{
@@ -96,6 +96,10 @@ function ProductList() {
               console.log(error)
           })
       },[ limit, page,])
+
+
+      
+
       
 const deleteProduct = async(id) => {
 if(id){

@@ -10,6 +10,7 @@ import Signin from './pages/Signin.jsx'
 import Home from './pages/Home.jsx'
 import { Toaster } from "@/components/ui/toaster"
 import Product from './pages/Product.jsx'
+import Order from './pages/Order.jsx'
 
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
           <Route path={"/sign-in"} element={<Login/>}/>
           <Route path={"/sign-up"} element={<Signin/>}/>
           <Route path={"/product"} element={<Product/>}/>
-          
+          <Route path={"/order"} element={<Order/>}/>
         </Routes>
       </BrowserRouter>
     </>

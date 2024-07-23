@@ -42,7 +42,7 @@ sdfssdfdsfsdaas
           withCredentials: true,
           baseURL: `${HOST_NAME}`,
        
-          headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+          headers: { 'Content-Type': 'application/json'},
           credentials: 'include',
         })
          try {
