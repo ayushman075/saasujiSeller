@@ -58,14 +58,16 @@ function ProductList() {
       description: "",
       price: 0,
       category: "",
-      stock: 0
+      stock: 0,
+      validity:365
     });
     const [newProduct,setNewProduct] = useState({
       productName: "",
       description: "",
       price: 0,
       category: "",
-      stock: 0
+      stock: 0,
+      validity:365
     })
     const [newProductImage,setNewProductImage] = useState()
     const [loading,setLoading] = useState(false)
@@ -161,6 +163,7 @@ const handleProductSubmit = async () => {
     formData.append('price',newProduct.price);
     formData.append('category',newProduct.category);
     formData.append('stock',newProduct.stock);
+    formData.append('validity',newProduct.validity);
        await instance.post(`${HOST_NAME}product/createProduct`,formData)
     .then(function (response) {
     // handle success
@@ -276,6 +279,16 @@ const handleProductSubmit = async () => {
              placeholder='Enter Price'
              value={newProduct.price}
            />
+           <label htmlFor='validity'>Validity (in days)</label>
+           <input
+           className='m-auto p-2  border-orange-300 outline-none w-full border-2 rounded-md  my-1'
+            
+             name="validity"
+             onChange={(e)=>setNewProduct((prev)=>({...prev,validity:e.target.value}))}
+             type='tel'
+             placeholder='Enter Price'
+             value={newProduct.validity}
+           />
            <label htmlFor='stock'>Stock</label>
            <input
            className='m-auto p-2  border-orange-300 outline-none w-full border-2 rounded-md  my-1'
@@ -302,6 +315,7 @@ const handleProductSubmit = async () => {
       <TableHead className="text-center">Description</TableHead>
       <TableHead className="w-[100px] text-center">Category</TableHead>
       <TableHead className=" text-center">Price</TableHead>
+      <TableHead className=" text-center">Validity</TableHead>
       <TableHead className="text-center">Stock</TableHead>
       <TableHead className="w-[150px] text-center">Seller</TableHead>
       <TableHead className="w-[170px] text-center">Created At</TableHead>
@@ -338,6 +352,7 @@ const handleProductSubmit = async () => {
       description: product.description,
       price: product.price,
       category: product.category,
+      validity:product.validity,
       stock: product.stock
     })
   }} className='ml-2' size={25} color='orange'/></DialogTrigger>
@@ -391,6 +406,16 @@ const handleProductSubmit = async () => {
              placeholder='Enter Price'
              value={updateData.price}
            />
+           <label htmlFor='validity'>Validity (in Days)</label>
+           <input
+           className='m-auto p-2  border-orange-300 outline-none w-full border-2 rounded-md  my-1'
+            
+             name="validity"
+             onChange={(e)=>setUpdateData((prev)=>({...prev,validity:e.target.value}))}
+             type='tel'
+             placeholder='Enter Validity'
+             value={updateData.validity}
+           />
            <label htmlFor='stock'>Stock</label>
            <input
            className='m-auto p-2  border-orange-300 outline-none w-full border-2 rounded-md  my-1'
@@ -414,6 +439,7 @@ const handleProductSubmit = async () => {
             <TableCell className="text-center">{product.description}</TableCell>
             <TableCell className="text-center">{product.category}</TableCell>
             <TableCell className="text-center">{product.price}</TableCell>
+            <TableCell className="text-center">{product.validity}</TableCell>
             <TableCell className="text-center">{product.stock}</TableCell>
             <TableCell className="text-center">{product.seller.email}</TableCell>
             <TableCell className="text-center">{new Date(product.createdAt).toLocaleString()}</TableCell>
