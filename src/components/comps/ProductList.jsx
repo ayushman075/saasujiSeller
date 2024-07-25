@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { HOST_NAME } from '../../constants'
+import { HOST_NAME, SERVER_URL } from '../../constants'
 import { useToast } from "@/components/ui/use-toast"
 import ReactPaginate from 'react-paginate';
 import {
@@ -13,7 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import Navbar from './Navbar';
-import { Pencil,Trash,Plus,Image } from 'lucide-react';
+import { Pencil,Trash,Plus,Image,ScanSearch } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -51,6 +51,7 @@ function ProductList() {
     const [pageCount, setPageCount] = useState(0);
     const [limit,setLimit] = useState(10);
     const [sellerId,setSellerId] = useState("");
+    const [productWebsite,setProductWebsite] = useState("");
     const [totalProduct,setTotalProduct] = useState(0);
     const [data,setData] = useState([]);
     const [updateData,setUpdateData]  = useState({
@@ -76,8 +77,6 @@ function ProductList() {
       credentials: 'include',
       withCredentials: true,
         baseURL: `${HOST_NAME}`,
-        headers: { 'Content-Type': 'application/json'},
-        
       })
       useEffect(()=>{
         
@@ -178,7 +177,7 @@ const handleProductSubmit = async () => {
     }).catch((error)=>{
     console.log(error)
     toast({
-      description: error.data.message
+      description: error.message
     })
     setLoading(false);
     })
@@ -189,7 +188,33 @@ const handleProductSubmit = async () => {
      }
   }
 }
-    
+    const scrapeWebsite= async()=>{
+  if(!productWebsite){
+  toast.error("Please enter Product Website URL to fetch data !!")
+  }
+  else{
+    try {
+    setLoading(true);
+      axios.get(`${SERVER_URL}scrape?url=${productWebsite}`).then((response)=>{
+      const scrapedData = response.data;
+      const title = scrapedData.title;
+      const description = scrapedData.description;
+      setNewProduct((prev)=>({...prev,productName:title})),
+      setNewProduct((prev)=>({...prev,description:description}))
+      setLoading(false)
+      }).catch((error)=>{
+         console.log(error)
+    toast({
+      description: error.data
+    })
+    setLoading(false);})
+    } catch (error) {
+      console.log(error)
+        toast.error(error.message)
+        setLoading(false);
+    }
+    }
+    }
 
   return (
     <div>
@@ -238,6 +263,20 @@ const handleProductSubmit = async () => {
   </label>
   <input onChange={(e)=>{setNewProductImage(e.target.files[0])}} accept='image/*' 
         id="files" className='hidden' type="file"/>
+</div>
+<label htmlFor='productWebsite'>Product Website</label>
+<div className='flex flex-row'>
+  <input
+             className='m-auto p-2  border-orange-300 outline-none w-full mr-3 border-2 rounded-md  my-1'
+             name="productWebsite"
+             onChange={(e)=>setProductWebsite(e.target.value)}
+             
+             placeholder='Enter Product Website'
+             value={productWebsite}
+  />
+<button className='text-orange-400' onClick={scrapeWebsite}>
+  <ScanSearch size={40}/>
+</button>
 </div>
         <label htmlFor='productName'>Name</label>
         <input
