@@ -11,6 +11,7 @@ import Home from './pages/Home.jsx'
 import { Toaster } from "@/components/ui/toaster"
 import Product from './pages/Product.jsx'
 import Order from './pages/Order.jsx'
+import PrivatePages from './components/comps/PrivatePages.jsx'
 
 
 function App() {
@@ -21,11 +22,11 @@ function App() {
     <Toaster />
       <BrowserRouter>
         <Routes>
-          <Route path={"/"} element={<Home/>}/>
+          <Route path={"/"} element={<PrivatePages element={<Home/>}/>}/>
           <Route path={"/sign-in"} element={<Login/>}/>
           <Route path={"/sign-up"} element={<Signin/>}/>
-          <Route path={"/product"} element={<Product/>}/>
-          <Route path={"/order"} element={<Order/>}/>
+          <Route path={"/product"} element={<PrivatePages element={<Product/>}/>}/>
+          <Route path={"/order"} element={<PrivatePages element={<Order/>}/>}/>
         </Routes>
       </BrowserRouter>
     </>

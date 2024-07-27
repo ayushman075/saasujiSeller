@@ -219,7 +219,7 @@ const handleProductSubmit = async () => {
   return (
     <div>
     <Navbar title={"Products Page"}/>
-    <div className='flex justify-end m-3 p-2 '>
+    <div className='flex justify-end m-3 p-2 mt-[50px]'>
     <Dialog>
       <DialogTrigger asChild>
       <button className='flex p-2 rounded-lg hover:bg-white bg-orange-400 border-2 border-orange-400'><Plus size={25} color='black'/>  Add Product</button>

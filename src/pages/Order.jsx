@@ -190,7 +190,7 @@ useEffect(() => {
                 datasets: [
                   {
                     data: [
-                        totalSales/1000,
+                       totalSales/1000,
                         totalOrders,
                         totalQuantity
                     ],
@@ -209,7 +209,7 @@ useEffect(() => {
     <>
    
     <Navbar title={"Orders Page"}/>
-     <div className='flex flex-row flex-wrap' style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '10px',marginTop:"20px" }}>
+     <div className='flex flex-row flex-wrap ' style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '10px',marginTop:"40px" }}>
         <Card className='w-[600px] max-sm:w-5/6 my-5'>
           <h2 className='text-center' >Total Sales</h2>
           <Bar data={barChartData}/>

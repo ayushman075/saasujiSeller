@@ -1,21 +1,50 @@
 import axios from 'axios';
 import { Formik } from 'formik';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HOST_NAME } from '../constants';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/components/ui/use-toast"
 import { Eye } from 'lucide-react';
 import { EyeOff } from 'lucide-react';
+import ani from '../assets/ani.json'
+import Lottie from 'react-lottie-player'
 
 function Login() {
   const navigate = useNavigate();
   const { toast } = useToast()
   const [passwordVisible,setPasswordVisible]=useState(false);
+  useEffect(()=>{
+    
+    const instance = axios.create({
+        withCredentials: true,
+        baseURL: `${HOST_NAME}`,
+     
+        headers: { 'Content-Type': 'application/json'},
+        credentials: 'include',
+      })
+
+      instance.get('user/getcurrentuser').then((response)=>{
+        console.log(response.status)
+        if(response.status==200){
+          navigate("/",{replace:true});
+            
+        }
+        
+      }).catch((error)=>{
+        console.log(error)
+        // toast({
+        //     description:"Error getting user status"
+        // })
+        
+        
+        navigate("/sign-in",{replace:true});
+      })
+},[])
   return (
     <>
     <div className='flex flex-wrap h-screen flex-row max-sm:flex-col'>
       <div className='w-1/2 max-sm:w-full h-screen max-sm:h-1/2 bg-orange-300'>
-sdfssdfdsfsdaas
+      <Lottie animationData={ani} className="player w-3/4 h-full align-middle justify-center m-auto"  loop play />
       </div>
       <div className='w-1/2  max-sm:w-full h-screen flex flec-col align-middle justify-center max-sm:h-1/2 '>
         <div className='w-1/2 shadow-2xl flex flex-col p-8 max-sm:p-3 justify-center align-middle  max-sm:w-4/5 h-96 m-auto'>
@@ -53,7 +82,7 @@ sdfssdfdsfsdaas
    toast({
     description: "Login Successfull !!",
   })
-   navigate("/");
+   navigate("/",{replace:true});
    setSubmitting(false);
   }).catch((error)=>{
     console.log(error)

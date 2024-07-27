@@ -1,7 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Progress } from "@/components/ui/progress"
 import { Eye } from 'lucide-react';
 import { EyeOff } from 'lucide-react';
+import { HOST_NAME } from '../constants';
+import axios from 'axios';
+import { useToast } from "@/components/ui/use-toast"
+import { useNavigate } from 'react-router-dom';
+import Lottie from 'react-lottie-player';
+import ani from '../assets/ani.json'
 
 function Signin() {
 
@@ -9,9 +15,40 @@ function Signin() {
   const [passwordVisible,setPasswordVisible]=useState(false);
   const [cnfPasswordVisible,setCnfPasswordVisible]=useState(false);
   const [cnfPassword,setCnfPassword]=useState('');
+  const navigate = useNavigate();
   const [formPage,setFormPage]=useState(1);
-  const [isLoading , setisLoading]=useState(false);
-  
+  const [isLoading , setIsLoading]=useState(false);
+  const { toast } = useToast()
+  useEffect(()=>{
+    setIsLoading(true);
+    const instance = axios.create({
+        withCredentials: true,
+        baseURL: `${HOST_NAME}`,
+     
+        headers: { 'Content-Type': 'application/json'},
+        credentials: 'include',
+      })
+
+      instance.get('user/getcurrentuser').then((response)=>{
+        if(response.status!=200){
+          
+            setIsLoading(false);
+        }
+        else{
+           
+            setIsLoading(false);
+            navigate("/",{replace:true});
+        }
+      }).catch((error)=>{
+        console.log(error)
+        // toast({
+        //     description:"Error getting user status"
+        // })
+        
+        setIsLoading(false);
+        navigate("/sign-up",{replace:true});
+      })
+},[])
   const [categoryDropdown,setCategoryDropdown]=useState([{key:"Select an option",value:''},
                                                           {key:"E-commerce",value:"E-commerce"},
                                                           {key:'Accounting',value:'Accounting'},
@@ -20,6 +57,30 @@ function Signin() {
   ])
   const [userData,setUserData]=useState({email:'',password:'',username:'',role:'seller',profile:{firstName:'',lastName:'',address:'',phoneNumber:'',avatar:''},sellerDetails:{businessName:'',businessAddress:'',taxId:'',category:'',website:'',linkedin:''}})
   const handleSubmit = async() =>{
+    setIsLoading(true);
+    console.log(userData)
+    const instance = axios.create({
+      withCredentials: true,
+      baseURL: `${HOST_NAME}`,
+   
+      headers: { 'Content-Type': 'application/json'},
+      credentials: 'include',
+    })
+
+    instance.post('user/register',{userData:userData}).then((response)=>{
+console.log(response)
+toast({
+  description:`User registered successfully !!`
+})
+setIsLoading(false);
+navigate('/sign-in')
+    }).catch((error)=>{
+      console.log(error);
+      toast({
+        description:`Error occurred while registering user ${error.message}`
+      })
+      setIsLoading(false);
+    })
 
   }
 
@@ -27,7 +88,8 @@ function Signin() {
     <>
     <div className='flex flex-wrap h-screen flex-row max-sm:flex-col'>
       <div className='w-1/2 max-sm:w-full h-screen max-sm:h-20 bg-orange-300'>
-sdfssdfdsfsdaas
+      <Lottie animationData={ani} className="player w-3/4 h-full align-middle justify-center m-auto"  loop play />
+
       </div>
       <div className='w-1/2  max-sm:w-full h-screen flex flex-col align-middle  max-sm:h-5/6 '>
         <div className='w-3/5 shadow-2xl flex flex-col p-8 max-sm:p-3    max-sm:w-5/6 h-4/5 max-sm:h-full max-sm:mt-4 m-auto'>
@@ -262,7 +324,7 @@ sdfssdfdsfsdaas
 
   </button>}
   <Progress style={{color:"orange"}} className={'mt-6 w-1/2  text-orange-300 ' }value={100*formPage/2} />
-  <button disabled={isLoading}  onClick={()=>{formPage<2&&setFormPage(formPage+1);formPage==2&&handleSubmit}} className='p-2 px-3 rounded-lg m-2 border-2 border-orange-300 bg-orange-300 hover:bg-white'>
+  <button disabled={isLoading}  onClick={()=>{formPage<2&&setFormPage(formPage+1);formPage==2&&handleSubmit()}} className='p-2 px-3 rounded-lg m-2 border-2 border-orange-300 bg-orange-300 hover:bg-white'>
 {formPage==2?'Submit':'Next'}
   </button>
 
